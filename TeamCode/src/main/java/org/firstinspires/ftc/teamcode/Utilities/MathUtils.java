@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import org.opencv.core.Point;
 
+import static java.lang.Math.floorMod;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toRadians;
 import static org.firstinspires.ftc.teamcode.Utilities.MathUtils.angleMode.RADIANS;
@@ -20,8 +21,14 @@ public class MathUtils {
      * @return the closest relative target angle
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
+
     public static double closestAngle(double targetAngle, double currentAngle) {
-        return 0;
+
+            double a1 = floorMod(Math.round(((360 - targetAngle) + currentAngle)), 360);
+            double a2 = -1 * (360 - a1);
+
+
+            return (StrictMath.abs(a1) <= StrictMath.abs(a2)) ? currentAngle - a1 : currentAngle - a2;
     }
 
 

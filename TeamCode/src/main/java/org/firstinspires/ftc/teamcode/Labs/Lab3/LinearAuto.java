@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Hardware.Mecanum;
+import org.firstinspires.ftc.teamcode.Hardware.WestCoast;
 
 import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.multTelemetry;
 import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.setOpMode;
@@ -19,12 +19,12 @@ import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.setOpMode;
 public class LinearAuto extends LinearOpMode
 {
     private ElapsedTime runtime = new ElapsedTime();
-    private Mecanum robot;
+    private WestCoast robot;
 
     public void initialize(){
         setOpMode(this);
 
-        robot = new Mecanum();
+        robot = new WestCoast();
 
         multTelemetry.addData("Status", "Initalized");
         multTelemetry.update();
