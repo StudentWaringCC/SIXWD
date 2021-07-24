@@ -19,7 +19,7 @@ public class WestCoast {
 
    public IMU imu;
 
-   public PID0 drivePID = new PID0 (PIDConstants.propWeight, PIDConstants.intWeight, PIDConstants.dervWeight);
+   public PID0 drivePID = new PID0 (PIDConstants.propWeight, PIDConstants.intWeight, PIDConstants.dervWeight, 0, 0);
 
    public static ElapsedTime time = new ElapsedTime();
 

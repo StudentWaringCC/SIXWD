@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Hardware.Arm;
-import org.firstinspires.ftc.teamcode.Hardware.Bumper;
 import org.firstinspires.ftc.teamcode.Hardware.Controls.Controller_0;
+import org.firstinspires.ftc.teamcode.Hardware.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Shooter;
 import org.firstinspires.ftc.teamcode.Hardware.WestCoast;
 
 import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.multTelemetry;
@@ -19,11 +19,10 @@ public class IterativeTeleOp extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private WestCoast robbot;
     private Controller_0 controller1;
+    private Controller_0 controller2;
 
 
-
-    // Variable to store set point for PID angle
-    private double PID_Angle = 0;
+    private static final double servoOffset = .05;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -32,11 +31,15 @@ public class IterativeTeleOp extends OpMode {
     public void init() {
         setOpMode(this);
 
-        Arm.init();
-        // Bumper.init();
+        Intake.init();
+
+        Shooter.init();
 
         robbot = new WestCoast();
+
         controller1 = new Controller_0(gamepad1);
+        controller2 = new Controller_0(gamepad2);
+
 
         multTelemetry.addData("Status", "Initialized");
         multTelemetry.update();
@@ -63,7 +66,7 @@ public class IterativeTeleOp extends OpMode {
     @Override
     public void start() {
         runtime.reset();
-        PID_Angle = robbot.imu.getAngle();
+
 
         /*
                     Y O U R   C O D E   H E R E
@@ -80,47 +83,23 @@ public class IterativeTeleOp extends OpMode {
     public void loop() {
 
         controller1.update();
-
-        // Bumper.bumperState(controller1.square.isPressed(), controller1.circle.isPressed());
-
-        Arm.armSTATE(controller1.RB.isPressed(), controller1.LB.isPressed());
-
-
-
+        controller2.update();
 
         double regTurn = controller1.leftStick().x; // Set turn value
 
-        double curAngle = robbot.imu.getAngle();
+        Shooter.shooterState(controller2.triangle.isTapped());
+        Shooter.feederState(controller2.square.isTapped());
 
-         /* if (Math.abs(regTurn) >= .05) {
-            PID_Angle = curAngle;
-        }else{
-            regTurn = robbot.drivePID.update(PID_Angle - curAngle) * -1;
-            }  */
+        Intake.runIntake(controller2.cross.isTapped(), controller2.circle.isPressed());
+        Intake.pleatherState(controller2.RB.isTapped(), controller2.LB.isTapped());
 
-
-
-
-        // robbot.setDrivePower(controller1.RT.getRawValue() - controller1.LT.getRawValue(), regTurn, controller1.triangle.isToggle());
+        robbot.setDrivePower(controller1.RT.getRawValue() - controller1.LT.getRawValue(), regTurn, controller1.triangle.isToggle());
 
 
         /*
              ----------- L O G G I N G -----------
                                                 */
         multTelemetry.addData("Status", "TeleOp Running");
-        multTelemetry.addData("boopy", 0.0 - 0.0);
-        multTelemetry.addData("woopsy", PID_Angle - 0.0);
-        multTelemetry.addData("doopsy", 0.0 - robbot.imu.getAngle());
-        multTelemetry.addData("poopsy", 0.0 - curAngle);
-        multTelemetry.addData("scoopty", PID_Angle - curAngle);
-
-
-        multTelemetry.addData("angle", robbot.imu.getAngle());
-        multTelemetry.addData("pid output", robbot.drivePID.update(PID_Angle - robbot.imu.getAngle()));
-        multTelemetry.addData("Drive", controller1.RT.getRawValue() - controller1.LT.getRawValue());
-        multTelemetry.addData("regTurn", regTurn);
-        multTelemetry.addData("PID_Angle", PID_Angle);
-        multTelemetry.addData("Precision", controller1.RB.isToggle());
         multTelemetry.update();
     }
 
