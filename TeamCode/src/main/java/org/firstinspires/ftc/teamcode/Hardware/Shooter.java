@@ -59,9 +59,11 @@ public class Shooter {
         shooter1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooter2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-
         feedServo = hardwareMap.get(Servo.class, "feedservo");
         lockServo = hardwareMap.get(Servo.class, "lockservo");
+
+        curShooterState = ShooterState.OFF;
+        curFeederState = FeederState.IDLE;
     }
 
     public static long getPosition(){

@@ -30,17 +30,20 @@ public class Intake {
         pleatherLeft = hardwareMap.get(Servo.class, "pleatherleft");
         pleatherRight = hardwareMap.get(Servo.class, "pleatherright");
         pleatherRight.setDirection(Servo.Direction.REVERSE);
+
+        curPleatherState = pleatherState.RETRACTED;
+        curIntakeState = intakeState.OFF;
     }
 
     public static void intakeOn(){
-        intake1.setPower(1);
-        intake2.setPower(1);
+        intake1.setPower(1.0);
+        intake2.setPower(1.0);
         bottomRoller.setPower(1);
     }
 
     public static void intakeOff(){
         intake1.setPower(0);
-        intake2.setPower(0);
+        intake2.setPower(0.0);
         bottomRoller.setPower(0);
     }
 
@@ -86,7 +89,7 @@ public class Intake {
     }
 
         public static void pleatherPos(pleatherState state){
-            double position = (state == pleatherState.RETRACTED) ? 0.35 :
+            double position = (state == pleatherState.RETRACTED) ? 0.4 :
                     (state == pleatherState.ROLLING) ? 0.15 : (state == pleatherState.FLAT) ? 0.01 : 0.0;
             pleatherRight.setPosition(position);
             pleatherLeft.setPosition(position + servoOffset);
@@ -132,7 +135,7 @@ public class Intake {
         }
 
 
-        private enum pleatherState {
+        public enum pleatherState {
             RETRACTED, ROLLING, FLAT, REVERSE
         }
 

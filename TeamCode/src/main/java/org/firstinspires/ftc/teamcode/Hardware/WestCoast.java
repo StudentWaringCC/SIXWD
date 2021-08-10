@@ -4,9 +4,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.DashConstants.PIDConstants;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors.Camera;
 import org.firstinspires.ftc.teamcode.Hardware.Sensors.IMU;
+import org.firstinspires.ftc.teamcode.Labs.Lab3.Vision.DetectionPipeline;
 import org.firstinspires.ftc.teamcode.Utilities.PID0;
 import org.opencv.core.Mat;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
@@ -18,6 +22,10 @@ import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.multTelemetry
 public class WestCoast {
 
    public IMU imu;
+
+   private DetectionPipeline pipeline = new DetectionPipeline();
+
+   // public Camera camera;
 
    public PID0 drivePID = new PID0 (PIDConstants.propWeight, PIDConstants.intWeight, PIDConstants.dervWeight, 0, 0);
 
@@ -53,8 +61,10 @@ public class WestCoast {
 
       imu = new IMU("imu");
 
+      // camera = new Camera("Camera", pipeline);
+
       multTelemetry.addData("Status", "Initialized");
-      multTelemetry.update();
+
    }
 
    public void resetMotors(){

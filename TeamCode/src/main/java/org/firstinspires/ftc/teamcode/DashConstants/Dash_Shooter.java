@@ -9,5 +9,5 @@ public class Dash_Shooter {
     public static double i = 0;
     public static double d = 0.00005;
     public static double f = 0;
-    public static int RPM = 1800;
+    public static int RPM = 2500;
 }
